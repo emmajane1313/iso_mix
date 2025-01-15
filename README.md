@@ -4,7 +4,7 @@ Made during the Livepeer ComfyStream program.
 
 [Workflow](https://github.com/emmajane1313/iso_mix/blob/main/isomix_workflow.json)
 
-[Video walkthrough]()
+[Video walkthrough](https://tape.xyz/watch/0x84ec-0x0208)
 
 ## Description
 A dual-prompt segmentation workflow for real-time video manipulation. IsoMix transforms natural language input into precise region masks, enabling users to isolate and modify specific areas of their stream through semantic targeting. The system processes two distinct prompts: one for intelligent region selection, and another for generating contextual replacements within the masked areas. 
