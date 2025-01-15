@@ -1,0 +1,6 @@
+/comfystream/ui/node_modules
+/comfystream/ui/package.json
+/comfystream/ui/.next
+/comfystream/build
+/comfystream/__pycache__
+/comfystream/*.egg-info

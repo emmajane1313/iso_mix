@@ -1,0 +1,144 @@
+{
+  "1": {
+    "inputs": {
+      "image": "sampled_frame.jpg",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "2": {
+    "class_type": "Florence2Run",
+    "_meta": {
+      "title": "Florence2Run"
+    },
+
+    "inputs": {
+      "image": ["1", 0],
+      "text_input": "shirt",
+      "task": "caption_to_phrase_grounding",
+      "fill_mask": true,
+      "keep_model_loaded": true
+    }
+  },
+  "3": {
+    "class_type": "Florence2toCoordinates",
+    "_meta": {
+      "title": "Florence2 Coordinates"
+    },
+
+    "inputs": {
+      "data": ["2", 3],
+      "index": 0,
+      "batch": false
+    }
+  },
+  "4": {
+    "class_type": "Sam2Segmentation",
+    "_meta": {
+      "title": "Sam2Segmentation"
+    },
+
+    "inputs": {
+      "image": ["1", 0],
+      "keep_model_loaded": true,
+      "bboxes": ["3", 1]
+    }
+  },
+  "5": {
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Checkpoint Loader Simple"
+    },
+    "inputs": {
+      "ckpt_name": "pixelstyleckpt_strength07.safetensors"
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode"
+    },
+    "inputs": {
+      "text": "beautiful yellow, red, blue and purple flowers of all kinds and types",
+      "clip": [
+      "5",1
+      ]
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode"
+    },
+    "inputs": {
+      "text": "blurry",
+      "clip": [
+      "5",1
+      ]
+    }
+  },
+  "8": {
+    "class_type": "VAEEncodeForInpaint",
+    "_meta": {
+      "title": "VAE Encode For Inpaint"
+    },
+    "inputs": {
+      "mask": ["4", 0],
+      "vae": ["5",2],
+      "pixels": ["1", 0],
+      "grow_mask_by": 6
+    }
+  },
+  "9": {
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "K Sampler"
+    },
+    "inputs": {
+      "model": ["5", 0],
+      "positive": [
+        "6",0
+      ],
+      "negative": [
+        "7",0
+      ],
+      "latent_image": [
+    "8",0
+      ],
+      "seed": 802791369075914,
+      "steps": 20,
+      "control_after_generate": "randomize",
+      "cfg": 8.0,
+      "sampler_name": "euler",  
+      "scheduler": "normal", 
+      "denoise": 1.00
+    }
+  },
+  "10": {
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    },
+    "inputs": {
+      "samples": ["9", 0],
+      "vae": [
+    "5",2
+      ]
+    }
+  },
+  "11": {
+    "inputs": {
+      "images": [
+        "10",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  }
+}
